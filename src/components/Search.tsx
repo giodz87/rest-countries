@@ -11,6 +11,7 @@ type darkMode = {
   setGetInfo: (getInfo: string) => void;
   info: any;
   setInfo: (info: any) => void;
+  getCountry: (value: string) => void;
 };
 
 export default function Search({
@@ -20,6 +21,7 @@ export default function Search({
   setGetInfo,
   info,
   setInfo,
+  getCountry,
 }: darkMode) {
   // const getCountry = async () => {
   //   try {
@@ -36,42 +38,41 @@ export default function Search({
   //   } catch (err) {}
   // };
   const [filterByRegion, setFilterByRegion] = useState<boolean>(false);
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch(
-          getInfo.trim()
-            ? `https://restcountries.com/v3.1/name/${getInfo.trim()}`
-            : "https://restcountries.com/v3.1/all"
-        );
-        const data = await response.json();
 
-        if (response.ok) {
-          setInfo(getInfo.trim() ? data : data.slice(157, 165));
-        } else {
-          setInfo([]); // Clear the list if there's an issue with the API call
-        }
-      } catch (err) {
-        setInfo([]); // Handle errors by clearing the list
-      }
-    })();
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await fetch(
+  //         getInfo.trim()
+  //           ? `https://restcountries.com/v3.1/name/${getInfo.trim()}`
+  //           : "https://restcountries.com/v3.1/all"
+  //       );
+  //       const data = await response.json();
+
+  //       if (response.ok) {
+  //         setInfo(getInfo.trim() ? data : data.slice(157, 165));
+  //       } else {
+  //         setInfo([]);
+  //       }
+  //     } catch (err) {
+  //       setInfo([]);
+  //     }
+  //   })();
+  // }, [getInfo]);
+
+  useEffect(() => {
+    getCountry(getInfo);
   }, [getInfo]);
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGetInfo(event.target.value);
   };
-
-  const regions = [
-    { name: "europe", label: "E" },
-    { name: "americas", label: "A" },
-    { name: "azia", label: "A" },
-    /// ??? wtf :D :D :D
-  ];
-
+  console.log(getInfo);
   return (
     <div
       className={` ${
         dark ? "bg-[#FAFAFA]" : "bg-[#202C36] "
-      } transition-colors duration-500 px-4 pt-6 flex flex-col items-center justify-center gap-10`}
+      } transition-colors duration-500 px-4 pt-6 flex flex-col items-center justify-center gap-10 relative`}
     >
       <div className="relative ">
         {" "}
@@ -141,7 +142,7 @@ export default function Search({
       <section
         className={`${
           dark ? "text-[#111517] " : "text-[#fff]"
-        } text-[14px] font-semibold leading-[16px] flex flex-col `}
+        } text-[14px] font-semibold leading-[16px] flex flex-col  absolute top-20 w-[342px]  `}
       >
         {info.map(
           (
@@ -158,13 +159,17 @@ export default function Search({
               key={index}
               className={`${
                 dark ? "bg-[#FFF]" : "bg-[#2B3844]"
-              } flex flex-col items-start justify-center gap-6  shadow-md mb-[40px]`}
+              } flex flex-row items-start justify-between px-6   shadow-md gap-1`}
             >
-              <img src={item.flags?.svg} alt={`Flag of ${item.name?.common}`} />
-              <h2 className="pl-6 text-[18px] font-extrabold leading-7">
+              <h2 className="text-[18px] font-extrabold leading-7">
                 {item.name?.common}
               </h2>
-              <div className="flex flex-col  gap-2 pl-6 pb-10">
+              <img
+                src={item.flags?.svg}
+                alt={`Flag of ${item.name?.common}`}
+                className="w-[30px] h-[30px]"
+              />
+              {/* <div className="flex flex-col  gap-2 pl-6 pb-10">
                 <p className="flex flex-row gap-1 items-center">
                   Population:{" "}
                   <p className=" text-[14px] font-light leading-[16px]">
@@ -176,7 +181,7 @@ export default function Search({
                   Region:{" "}
                   <p className=" text-[14px] font-light leading-[16px]">
                     {" "}
-                    {item.region?.[0]}
+                    {item.region}
                   </p>
                 </p>
                 <p className="flex flex-row gap-1 items-center">
@@ -186,7 +191,7 @@ export default function Search({
                     {item.capital}
                   </p>
                 </p>
-              </div>
+              </div> */}
             </div>
           )
         )}
