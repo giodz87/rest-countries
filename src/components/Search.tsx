@@ -3,7 +3,7 @@ import searchDark from "../assets/searchDark.svg";
 import arrow from "../assets/arrow.svg";
 import arrowDark from "../assets/arrowDark.svg";
 
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 type darkMode = {
   dark: boolean;
   setDark: (dark: boolean) => void;
@@ -12,6 +12,8 @@ type darkMode = {
   info: any;
   setInfo: (info: any) => void;
   getCountry: (value: string) => void;
+  allCountry: any;
+  setAllCountry: (allCountry: any) => void;
 };
 
 export default function Search({
@@ -22,6 +24,8 @@ export default function Search({
   info,
   setInfo,
   getCountry,
+  allCountry,
+  setAllCountry,
 }: darkMode) {
   // const getCountry = async () => {
   //   try {
@@ -67,12 +71,15 @@ export default function Search({
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGetInfo(event.target.value);
   };
-  console.log(getInfo);
+
   return (
     <div
       className={` ${
         dark ? "bg-[#FAFAFA]" : "bg-[#202C36] "
       } transition-colors duration-500 px-4 pt-6 flex flex-col items-center justify-center gap-10 relative`}
+      onClick={() => {
+        setInfo([]);
+      }}
     >
       <div className="relative ">
         {" "}
@@ -90,7 +97,7 @@ export default function Search({
           />
         )}
         <input
-          type="search"
+          type="text"
           alt="search"
           value={getInfo}
           onChange={handleInputChange}
@@ -143,6 +150,9 @@ export default function Search({
         className={`${
           dark ? "text-[#111517] " : "text-[#fff]"
         } text-[14px] font-semibold leading-[16px] flex flex-col  absolute top-20 w-[342px]  `}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
       >
         {info.map(
           (
@@ -156,6 +166,7 @@ export default function Search({
             index: React.Key | null | undefined
           ) => (
             <div
+              onClick={() => {}}
               key={index}
               className={`${
                 dark ? "bg-[#FFF]" : "bg-[#2B3844]"
@@ -195,6 +206,48 @@ export default function Search({
             </div>
           )
         )}
+      </section>
+      <section>
+        {allCountry.map((item: any, index: Key | null | undefined) => (
+          <div
+            key={index}
+            className={`${
+              dark ? "text-[#111517] " : "text-[#fff] bg-[#2B3844]"
+            } mx-[54px] mb-[40px] rounded-[5px] flex flex-col gap-6 shadow-md`}
+          >
+            <img
+              src={item.flags?.svg}
+              alt={`Flag of ${item.name?.common}`}
+              className=" rounded-t-[5px]"
+            />
+            <h2 className="text-[18px] font-extrabold leading-7 pl-6">
+              {item.name?.common}
+            </h2>
+            <div className="flex flex-col  gap-2 pl-6 pb-10">
+              <p className="flex flex-row gap-1 items-center">
+                Population:{" "}
+                <p className=" text-[14px] font-light leading-[16px]">
+                  {" "}
+                  {item.population}
+                </p>
+              </p>
+              <p className="flex flex-row gap-1 items-center">
+                Region:{" "}
+                <p className=" text-[14px] font-light leading-[16px]">
+                  {" "}
+                  {item.region}
+                </p>
+              </p>
+              <p className="flex flex-row gap-1 items-center">
+                Capital:{" "}
+                <p className=" text-[14px] font-light leading-[16px]">
+                  {" "}
+                  {item.capital}
+                </p>
+              </p>
+            </div>
+          </div>
+        ))}
       </section>
     </div>
   );

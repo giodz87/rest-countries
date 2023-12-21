@@ -7,7 +7,7 @@ function App() {
   const [dark, setDark] = useState<boolean>(false);
   const [getInfo, setGetInfo] = useState<string>("");
   const [info, setInfo] = useState<any[]>([]); // Adjust the type according to your data structure
-
+  const [allCountry, setAllCountry] = useState([]);
   const { userId } = useParams();
 
   // const getCountry = async () => {
@@ -29,20 +29,27 @@ function App() {
   //   }
   // };
 
-  const getCountry = async (value: string) => {
+  const getCountry = async () => {
     try {
       const response = await fetch(
-        `https://restcountries.com/v3.1/name/${value.trim()}`
+        getInfo.trim()
+          ? `https://restcountries.com/v3.1/name/${getInfo.trim()}`
+          : "https://restcountries.com/v3.1/all"
       );
       const data = await response.json();
 
       if (response.ok) {
-        setInfo(data);
+        if (getInfo.trim()) {
+          setInfo(data);
+        } else {
+          setAllCountry(data);
+        }
       } else {
         setInfo([]);
       }
     } catch (err) {
       setInfo([]);
+      setAllCountry([]);
     }
   };
 
@@ -63,6 +70,8 @@ function App() {
                 info={info}
                 setInfo={setInfo}
                 getCountry={getCountry}
+                allCountry={allCountry}
+                setAllCountry={setAllCountry}
               />
             }
           />
