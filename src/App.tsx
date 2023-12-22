@@ -1,14 +1,15 @@
 import { useState } from "react";
 import Header from "./components/Header";
 import Search from "./components/Search";
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Country from "./pages/Country";
 function App() {
   const [dark, setDark] = useState<boolean>(false);
   const [getInfo, setGetInfo] = useState<string>("");
   const [info, setInfo] = useState<any[]>([]); // Adjust the type according to your data structure
   const [allCountry, setAllCountry] = useState([]);
-  const { userId } = useParams();
+
+  // const { userId } = useParams();
 
   // const getCountry = async () => {
   //   try {
@@ -31,26 +32,11 @@ function App() {
 
   const getCountry = async () => {
     try {
-      const response = await fetch(
-        getInfo.trim()
-          ? `https://restcountries.com/v3.1/name/${getInfo.trim()}`
-          : "https://restcountries.com/v3.1/all"
-      );
+      const response = await fetch(`https://restcountries.com/v3.1/all`);
       const data = await response.json();
-
-      if (response.ok) {
-        if (getInfo.trim()) {
-          setInfo(data);
-        } else {
-          setAllCountry(data);
-        }
-      } else {
-        setInfo([]);
-      }
-    } catch (err) {
-      setInfo([]);
-      setAllCountry([]);
-    }
+      setInfo(data);
+      setAllCountry(data);
+    } catch (err) {}
   };
 
   return (
@@ -75,7 +61,19 @@ function App() {
               />
             }
           />
-          <Route path="/country:" element={<Country />} />
+          <Route
+            path="/:userId"
+            element={
+              <Country
+                getCountry={getCountry}
+                info={info}
+                getInfo={getInfo}
+                setGetInfo={setGetInfo}
+                allCountry={allCountry}
+                setAllCountry={setAllCountry}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

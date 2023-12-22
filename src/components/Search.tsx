@@ -2,8 +2,9 @@ import search from "../assets/search.svg";
 import searchDark from "../assets/searchDark.svg";
 import arrow from "../assets/arrow.svg";
 import arrowDark from "../assets/arrowDark.svg";
-
+import { useNavigate } from "react-router-dom";
 import { Key, useEffect, useState } from "react";
+
 type darkMode = {
   dark: boolean;
   setDark: (dark: boolean) => void;
@@ -28,7 +29,7 @@ export default function Search({
   setAllCountry,
 }: darkMode) {
   const [filterByRegion, setFilterByRegion] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   // const getCountry = async () => {
   //   try {
   //     const response = await fetch(
@@ -167,7 +168,9 @@ export default function Search({
             index: React.Key | null | undefined
           ) => (
             <div
-              onClick={() => {}}
+              onClick={() => {
+                navigate(`/${item.name.common}`);
+              }}
               key={index}
               className={`${
                 dark ? "bg-[#FFF]" : "bg-[#2B3844]"
@@ -188,6 +191,9 @@ export default function Search({
       <section>
         {allCountry.map((item: any, index: Key | null | undefined) => (
           <div
+            onClick={() => {
+              navigate(`/${item.name.common}`);
+            }}
             key={index}
             className={`${
               dark ? "text-[#111517] " : "text-[#fff] bg-[#2B3844]"
