@@ -27,6 +27,8 @@ export default function Search({
   allCountry,
   setAllCountry,
 }: darkMode) {
+  const [filterByRegion, setFilterByRegion] = useState<boolean>(false);
+
   // const getCountry = async () => {
   //   try {
   //     const response = await fetch(
@@ -41,7 +43,6 @@ export default function Search({
   //     }
   //   } catch (err) {}
   // };
-  const [filterByRegion, setFilterByRegion] = useState<boolean>(false);
 
   // useEffect(() => {
   //   (async () => {
@@ -76,7 +77,7 @@ export default function Search({
     <div
       className={` ${
         dark ? "bg-[#FAFAFA]" : "bg-[#202C36] "
-      } transition-colors duration-500 px-4 pt-6 flex flex-col items-center justify-center gap-10 relative`}
+      } transition-colors duration-500 px-4 pt-6 flex flex-col items-start justify-center gap-10 relative`}
       onClick={() => {
         setInfo([]);
       }}
@@ -103,7 +104,7 @@ export default function Search({
           onChange={handleInputChange}
           placeholder="Search for a country…"
           className={`${
-            dark ? "bg-[#FFFFFF]" : "bg-[#2B3844]"
+            dark ? "bg-[#FFFFFF] text-black" : "bg-[#2B3844] text-w"
           } transition-colors duration-500  w-[342px] h-[48px] rounded-[5px] shadow-sm pl-[74px]`}
         />
       </div>
@@ -180,29 +181,6 @@ export default function Search({
                 alt={`Flag of ${item.name?.common}`}
                 className="w-[30px] h-[30px]"
               />
-              {/* <div className="flex flex-col  gap-2 pl-6 pb-10">
-                <p className="flex flex-row gap-1 items-center">
-                  Population:{" "}
-                  <p className=" text-[14px] font-light leading-[16px]">
-                    {" "}
-                    {item.population}
-                  </p>
-                </p>
-                <p className="flex flex-row gap-1 items-center">
-                  Region:{" "}
-                  <p className=" text-[14px] font-light leading-[16px]">
-                    {" "}
-                    {item.region}
-                  </p>
-                </p>
-                <p className="flex flex-row gap-1 items-center">
-                  Capital:{" "}
-                  <p className=" text-[14px] font-light leading-[16px]">
-                    {" "}
-                    {item.capital}
-                  </p>
-                </p>
-              </div> */}
             </div>
           )
         )}
