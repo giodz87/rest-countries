@@ -1,15 +1,12 @@
 import { useParams } from "react-router-dom";
-
 import { useEffect, useState } from "react";
 
-type country = {
+type CountryProps = {
   getCountry: (value: string) => void;
-  info: any;
-
+  info: any[];
   getInfo: string;
   setGetInfo: (getInfo: string) => void;
-
-  allCountry: any;
+  allCountry: any[];
   setAllCountry: (allCountry: any) => void;
 };
 
@@ -20,37 +17,47 @@ export default function Country({
   setGetInfo,
   allCountry,
   setAllCountry,
-}: country) {
+}: CountryProps) {
   const { userId } = useParams<{ userId?: string }>();
-  const [countryId, setCountryId] = useState<string>();
+  const [selectedCountry, setSelectedCountry] = useState<any | undefined>(
+    undefined
+  );
+
   useEffect(() => {
-    if (userId) {
-      localStorage.setItem("userId", userId);
-      getCountry(userId);
+    // Find the country based on the user ID
+    const foundCountry = info.find(
+      (item) => item.name.common?.toLowerCase() === userId?.toLowerCase()
+    );
+
+    // If not found in the filtered info, look in allCountry
+    if (!foundCountry) {
+      const foundAllCountry = allCountry.find(
+        (item) => item.name.common?.toLowerCase() === userId?.toLowerCase()
+      );
+      setSelectedCountry(foundAllCountry);
+    } else {
+      setSelectedCountry(foundCountry);
     }
-  }, [userId]);
-  const dodo = info.filter(() => {
-    info.id?.common == userId;
-  });
-  console.log(info.name?.common);
-  console.log(userId);
+  }, [userId, info, allCountry]);
+
   return (
     <div>
       <div>
-        <div>
-          <h2>{dodo.name}</h2>
-          <img
-            src={info.flags?.svg}
-            alt={`Flag of ${info?.name?.common}`}
-            className="w-[100px] h-[80px]"
-          />
-          <div>
-            <p>Population: {info.population}</p>
-            <p>Region: {info.region}</p>
-            <p>Capital: {info.capital}</p>
-          </div>
-          <div>dodo{allCountry.name?.common}</div>
-        </div>
+        {selectedCountry && (
+          <>
+            <h2>{selectedCountry.name.common}</h2>
+            <img
+              src={selectedCountry.flags?.svg}
+              alt={`Flag of ${selectedCountry.name.common}`}
+              className="w-[100px] h-[80px]"
+            />
+            <div>
+              <p>Population: {selectedCountry.population}</p>
+              <p>Region: {selectedCountry.region}</p>
+              <p>Capital: {selectedCountry.capital}</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
