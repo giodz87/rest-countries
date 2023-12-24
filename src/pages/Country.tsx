@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import goBackImg from "../assets/call-made.svg";
 type CountryProps = {
   getCountry: (value: string) => void;
   info: any[];
@@ -18,6 +18,11 @@ export default function Country({
   allCountry,
   setAllCountry,
 }: CountryProps) {
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1);
+  };
   const { userId } = useParams<{ userId?: string }>();
   const [selectedCountry, setSelectedCountry] = useState<any | undefined>(
     undefined
@@ -42,19 +47,40 @@ export default function Country({
 
   return (
     <div>
+      <button
+        onClick={() => {
+          goBack();
+        }}
+        className="flex flex-row items-center gap-2 px-6 py-2 shadow-md"
+      >
+        {" "}
+        <img src={goBackImg} alt="" /> Back
+      </button>
       <div>
         {selectedCountry && (
           <>
-            <h2>{selectedCountry.name.common}</h2>
             <img
               src={selectedCountry.flags?.svg}
               alt={`Flag of ${selectedCountry.name.common}`}
               className="w-[100px] h-[80px]"
             />
+            <h2>{selectedCountry.name.common}</h2>
+
             <div>
-              <p>Population: {selectedCountry.population}</p>
+              <p>Native Name: {selectedCountry?.nativeName}</p>
+              <p>Population: {selectedCountry.population.toLocaleString()}</p>
               <p>Region: {selectedCountry.region}</p>
+              <p>Sub Region: {selectedCountry.subregion}</p>
               <p>Capital: {selectedCountry.capital}</p>
+            </div>
+
+            <div>
+              <p>Top Levle Domain: {selectedCountry.tld}</p>
+              <p>Currencies: </p>
+              <p>Languages: </p>
+            </div>
+            <div>
+              <p>Border Countries: </p>
             </div>
           </>
         )}
