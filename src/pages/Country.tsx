@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import goBackImg from "../assets/call-made.svg";
 type CountryProps = {
+  dark: boolean;
   getCountry: (value: string) => void;
   info: any[];
   getInfo: string;
@@ -11,6 +12,7 @@ type CountryProps = {
 };
 
 export default function Country({
+  dark,
   getCountry,
   info,
   getInfo,
@@ -46,41 +48,49 @@ export default function Country({
   }, [userId, info, allCountry]);
 
   return (
-    <div>
+    <div
+      className={`w-full ${
+        dark ? "bg-[#FAFAFA] text-black" : "bg-[#202C36]  text-white"
+      } transition-colors duration-500  flex flex-col items-start justify-center gap-[64px]`}
+    >
       <button
         onClick={() => {
           goBack();
         }}
-        className="flex flex-row items-center gap-2 px-6 py-2 shadow-md"
+        className="flex flex-row items-center gap-2 px-6 py-2 shadow-md  mt-[40px]"
       >
         {" "}
         <img src={goBackImg} alt="" /> Back
       </button>
-      <div>
+      <div className="flex flex-col gap-8">
         {selectedCountry && (
           <>
             <img
               src={selectedCountry.flags?.svg}
               alt={`Flag of ${selectedCountry.name.common}`}
-              className="w-[100px] h-[80px]"
             />
-            <h2>{selectedCountry.name.common}</h2>
-
-            <div>
-              <p>Native Name: {selectedCountry?.nativeName}</p>
-              <p>Population: {selectedCountry.population.toLocaleString()}</p>
-              <p>Region: {selectedCountry.region}</p>
-              <p>Sub Region: {selectedCountry.subregion}</p>
-              <p>Capital: {selectedCountry.capital}</p>
+            <div className=" flex flex-col gap-2">
+              <h2 className=" text-[22px] font-extrabold  ">
+                {selectedCountry.name.common}
+              </h2>
+              <div className="text-14px font-light opacity-[0.7] flex flex-col gap-1 ">
+                <p>Native Name: {selectedCountry?.nativeName}</p>
+                <p>Population: {selectedCountry.population.toLocaleString()}</p>
+                <p>Region: {selectedCountry.region}</p>
+                <p>Sub Region: {selectedCountry.subregion}</p>
+                <p>Capital: {selectedCountry.capital}</p>
+              </div>
             </div>
 
-            <div>
+            <div className="text-14px font-light">
               <p>Top Levle Domain: {selectedCountry.tld}</p>
               <p>Currencies: </p>
               <p>Languages: </p>
             </div>
             <div>
-              <p>Border Countries: </p>
+              <p className="text-[16px] leading-[24px] font-semibold">
+                Border Countries:
+              </p>
             </div>
           </>
         )}

@@ -119,6 +119,7 @@ function App() {
             path="/:userId"
             element={
               <Country
+                dark={dark}
                 getCountry={getCountry}
                 info={info}
                 getInfo={getInfo}

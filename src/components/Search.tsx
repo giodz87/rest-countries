@@ -105,7 +105,7 @@ export default function Search({
           onChange={handleInputChange}
           placeholder="Search for a country…"
           className={`${
-            dark ? "bg-[#FFFFFF] text-black" : "bg-[#2B3844] text-w"
+            dark ? "bg-[#FFFFFF] text-black" : "bg-[#2B3844]  text-white"
           } transition-colors duration-500  w-[342px] h-[48px] rounded-[5px] shadow-sm pl-[74px]`}
         />
       </div>
