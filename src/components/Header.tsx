@@ -11,7 +11,7 @@ export default function Header({ dark, setDark }: darkMode) {
     <header
       className={`${
         dark ? " bg-white" : " bg-[#2B3844]"
-      } transition-colors duration-500 flex flex-row items-center justify-between px-4  h-[80px] shadow-md w-full`}
+      } transition-colors duration-500 flex flex-row items-center justify-center   h-[80px] shadow-md w-full`}
     >
       <div className="w-[375px] flex flex-row items-center justify-between px-4  h-[80px] ">
         {" "}

@@ -3,84 +3,59 @@ import searchDark from "../assets/searchDark.svg";
 import arrow from "../assets/arrow.svg";
 import arrowDark from "../assets/arrowDark.svg";
 import { useNavigate } from "react-router-dom";
-import { Key, useEffect, useState } from "react";
+import { Key, useState } from "react";
 
 type darkMode = {
   dark: boolean;
-  setDark: (dark: boolean) => void;
-  getInfo: string;
-  setGetInfo: (getInfo: string) => void;
-  info: any;
-  setInfo: (info: any) => void;
   getCountry: (value: string) => void;
   allCountry: any;
-  setAllCountry: (allCountry: any) => void;
+  setAllCountry: (value: any) => void;
+  setSearchData: (value: any) => void;
+  searchData: any;
 };
 
 export default function Search({
   dark,
-  setDark,
-  getInfo,
-  setGetInfo,
-  info,
-  setInfo,
-  getCountry,
   allCountry,
   setAllCountry,
+  searchData,
+  setSearchData,
 }: darkMode) {
   const [filterByRegion, setFilterByRegion] = useState<boolean>(false);
   const navigate = useNavigate();
-  // const getCountry = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://restcountries.com/v3.1/name/${getInfo}`
-  //     );
-  //     const data = await response.json();
+  console.log(allCountry);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchData(
+      allCountry.filter((item: any) =>
+        item.name.common
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase())
+      )
+    );
+  };
 
-  //     if (response.ok) {
-  //       setInfo(data);
-  //     } else {
-  //       setInfo([]);
-  //     }
-  //   } catch (err) {}
+  // const handleRegionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const findRegion = allCountry.filter((item: any) => {
+  //     item.region.toLowerCase().includes(event.target.value.toLowerCase());
+  //   });
+  //   setAllCountry(findRegion);
   // };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const response = await fetch(
-  //         getInfo.trim()
-  //           ? `https://restcountries.com/v3.1/name/${getInfo.trim()}`
-  //           : "https://restcountries.com/v3.1/all"
-  //       );
-  //       const data = await response.json();
+  const handleRegionChange = (region: string) => {
+    const findRegion = allCountry.filter((item: any) =>
+      item.region.toLowerCase().includes(region.toLowerCase())
+    );
 
-  //       if (response.ok) {
-  //         setInfo(getInfo.trim() ? data : data.slice(157, 165));
-  //       } else {
-  //         setInfo([]);
-  //       }
-  //     } catch (err) {
-  //       setInfo([]);
-  //     }
-  //   })();
-  // }, [getInfo]);
-
-  useEffect(() => {
-    getCountry(getInfo);
-  }, [getInfo]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setGetInfo(event.target.value);
+    setAllCountry(findRegion);
   };
 
   return (
     <div
       className={` ${
         dark ? "bg-[#FAFAFA]" : "bg-[#202C36] "
-      } transition-colors duration-500 px-4 pt-6 flex flex-col items-start justify-center gap-10 relative`}
+      } transition-colors duration-500 px-4 pt-6 flex flex-col items-start justify-center gap-10 w-full relative `}
       onClick={() => {
-        setInfo([]);
+        // searchData([]);
       }}
     >
       <div className="relative ">
@@ -101,19 +76,18 @@ export default function Search({
         <input
           type="text"
           alt="search"
-          value={getInfo}
           onChange={handleInputChange}
           placeholder="Search for a country…"
           className={`${
             dark ? "bg-[#FFFFFF] text-black" : "bg-[#2B3844]  text-white"
-          } transition-colors duration-500  w-[342px] h-[48px] rounded-[5px] shadow-sm pl-[74px]`}
+          } transition-colors duration-500 mx-4  w-[343px] h-[48px] rounded-[5px] shadow-sm pl-[74px]`}
         />
       </div>
       <div>
         <div
           className={`${
             dark ? " bg-[#FFFFFF]" : "bg-[#2B3844]"
-          }  w-[200px] h-[48px] shadow-sm rounded-[5px] pl-[24px] pr-[19px] flex flex-row items-center justify-between  `}
+          }  w-[200px] h-[48px] shadow-sm mx-4 rounded-[5px] pl-[24px] pr-[19px] flex flex-row items-center justify-between  `}
           onClick={() => {
             setFilterByRegion(!filterByRegion);
           }}
@@ -135,14 +109,20 @@ export default function Search({
           <div
             className={`${
               dark ? " bg-[#FFFFFF] text-[#111517]" : "bg-[#2B3844] text-[#fff]"
-            }    w-[200px] text-[12px] font-normal leading-4 shadow-sm rounded-[5px] pl-[24px]  flex flex-col items-strart   gap-2 mt-1 py-[16px]  absolute z-10 `}
+            }    w-[200px] text-[12px] font-normal leading-4 shadow-sm rounded-[5px] pl-[24px]  flex flex-col items-strart  justify-start  gap-2 mt-1 py-[16px]  absolute z-10  mx-4`}
           >
-            <p>Africa</p>
-            <p>America</p>
-            <p>Asia</p>
-            <p>Europe</p>
-            <p>Oceania</p>
-            <p>Antarctica</p>
+            <p
+              onClick={() => {
+                handleRegionChange("Africa"),
+                  setFilterByRegion(!filterByRegion);
+              }}
+            >
+              Africa
+            </p>
+            <p onClick={() => handleRegionChange("America")}>America</p>
+            <p onClick={() => handleRegionChange("Asia")}>Asia</p>
+            <p onClick={() => handleRegionChange("Europe")}>Europe</p>
+            <p onClick={() => handleRegionChange("Oceania")}>Oceania</p>
           </div>
         ) : (
           ""
@@ -151,12 +131,12 @@ export default function Search({
       <section
         className={`${
           dark ? "text-[#111517] " : "text-[#fff]"
-        } text-[14px] font-semibold leading-[16px] flex flex-col  absolute top-20 w-[342px]  `}
+        } text-[14px] font-semibold leading-[16px] flex flex-col  absolute top-20 w-[342px]   `}
         onClick={(e) => {
           e.stopPropagation();
         }}
       >
-        {info.map(
+        {searchData.map(
           (
             item: {
               name: { common: string };
@@ -197,12 +177,12 @@ export default function Search({
             key={index}
             className={`${
               dark ? "text-[#111517] " : "text-[#fff] bg-[#2B3844]"
-            } mx-[54px] mb-[40px] rounded-[5px] flex flex-col gap-6 shadow-md`}
+            } mx-[54px] mb-[40px] rounded-[5px] flex flex-col gap-6 shadow-md w-[264px] `}
           >
             <img
               src={item.flags?.svg}
               alt={`Flag of ${item.name?.common}`}
-              className=" rounded-t-[5px]"
+              className=" rounded-t-[5px] w-[264px]"
             />
             <h2 className="text-[18px] font-extrabold leading-7 pl-6">
               {item.name?.common}
