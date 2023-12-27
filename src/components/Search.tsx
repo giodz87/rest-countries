@@ -23,7 +23,7 @@ export default function Search({
 }: darkMode) {
   const [filterByRegion, setFilterByRegion] = useState<boolean>(false);
   const [endSearch, setEndSearch] = useState<boolean>(false);
-  const [findRegion, setFindRegion] = useState<any[]>([]);
+  // const [findRegion, setFindRegion] = useState<any[]>([]);
   const navigate = useNavigate();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
