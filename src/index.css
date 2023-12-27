@@ -13,7 +13,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100vw;
+
+  height: 100vh;
 }
 
 shadow-box {
@@ -21,4 +22,9 @@ shadow-box {
 }
 span {
   font-weight: bold;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }

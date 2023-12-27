@@ -13,7 +13,7 @@ export default function Header({ dark, setDark }: darkMode) {
         dark ? " bg-white" : " bg-[#2B3844]"
       } transition-colors duration-500 flex flex-row items-center justify-center   h-[80px] shadow-md w-full`}
     >
-      <div className="w-[375px] flex flex-row items-center justify-between px-4  h-[80px] ">
+      <div className="w-[375px] flex flex-row items-center justify-between px-4  h-[80px] md:w-full md:mx-5 ">
         {" "}
         <h2 className={`${dark ? "text-[#111517]" : "text-white"}`}>
           Where in the world?
